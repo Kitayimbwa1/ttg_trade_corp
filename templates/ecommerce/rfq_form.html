@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Submit RFQ — T&TG Trade Corp{% endblock %}
+{% block content %}
+<div class="page-hero"><div class="container">
+  <div class="section-label">Buyer Services</div>
+  <h1 class="section-title mt-2">Request for <span>Quotation</span></h1>
+</div></div>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="ttg-card p-5">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-12"><label class="form-label">RFQ Title *</label><input type="text" name="title" class="form-control" required></div>
+            <div class="col-md-6"><label class="form-label">Quantity *</label><input type="number" name="quantity" class="form-control" value="1" min="1" required></div>
+            <div class="col-md-6"><label class="form-label">Target Price (USD)</label><input type="number" name="target_price" class="form-control" step="0.01" placeholder="Optional"></div>
+            <div class="col-12"><label class="form-label">Destination Country</label>
+              <select name="destination_country" class="form-select">
+                <option value="CA">Canada</option><option value="UG">Uganda</option>
+                <option value="NL">Netherlands</option><option value="JP">Japan</option><option value="KE">Kenya</option>
+              </select>
+            </div>
+            <div class="col-12"><label class="form-label">Description *</label><textarea name="description" class="form-control" rows="5" required></textarea></div>
+            <div class="col-12"><button type="submit" class="btn-gold btn px-5">Submit RFQ</button></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

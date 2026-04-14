@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Notifications — T&TG Trade Corp{% endblock %}
+{% block content %}
+
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">Your Inbox</div>
+    <h1 class="section-title mt-2" style="font-size:2.3rem;">
+      <span>Notifications</span>
+    </h1>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      {% if notifications %}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span style="color:var(--muted); font-size:0.85rem;">{{ notifications.count }} notification{{ notifications.count|pluralize }}</span>
+        </div>
+
+        {% for notif in notifications %}
+        <div class="ttg-card no-hover mb-3 {% if not notif.is_read %}card-gold-top{% endif %}"
+             style="padding:1.2rem 1.5rem; cursor:pointer;"
+             onclick="window.location='{% url 'mark_read' notif.pk %}'">
+          <div class="d-flex gap-3 align-items-start">
+
+            <!-- ICON -->
+            <div class="icon-box {% if not notif.is_read %}active{% endif %}" style="flex-shrink:0;">
+              {% if notif.notif_type == 'order' %}<i class="fas fa-shopping-bag"></i>
+              {% elif notif.notif_type == 'forex' %}<i class="fas fa-exchange-alt"></i>
+              {% elif notif.notif_type == 'training' %}<i class="fas fa-graduation-cap"></i>
+              {% elif notif.notif_type == 'certificate' %}<i class="fas fa-certificate"></i>
+              {% elif notif.notif_type == 'registration' %}<i class="fas fa-user-check"></i>
+              {% elif notif.notif_type == 'rfq' %}<i class="fas fa-file-alt"></i>
+              {% else %}<i class="fas fa-bell"></i>{% endif %}
+            </div>
+
+            <!-- CONTENT -->
+            <div style="flex:1; min-width:0;">
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <strong style="color:var(--cream); font-size:0.92rem;">{{ notif.title }}</strong>
+                <span style="color:var(--muted); font-size:0.75rem; white-space:nowrap;">
+                  {{ notif.created_at|timesince }} ago
+                </span>
+              </div>
+              <p style="color:var(--muted); font-size:0.87rem; margin:0.3rem 0 0; line-height:1.6;">
+                {{ notif.message }}
+              </p>
+              <div class="mt-2 d-flex align-items-center gap-3">
+                <span class="badge badge-navy">{{ notif.get_notif_type_display }}</span>
+                {% if not notif.is_read %}
+                  <span style="color:var(--gold); font-size:0.72rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;">● New</span>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+        </div>
+        {% endfor %}
+
+      {% else %}
+        <div class="ttg-card p-5 text-center no-hover">
+          <i class="fas fa-bell-slash" style="font-size:3.5rem; color:var(--border); margin-bottom:1.2rem;"></i>
+          <h4 style="font-family:'Cormorant Garamond',serif; color:var(--muted);">No Notifications Yet</h4>
+          <p style="color:var(--muted); font-size:0.9rem;">
+            Updates about your orders, applications, trades and training will appear here.
+          </p>
+          <a href="{% url 'dashboard' %}" class="btn-gold btn mt-2">Back to Dashboard</a>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

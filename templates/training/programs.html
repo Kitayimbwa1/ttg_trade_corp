@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Training Programs — T&TG Trade Corp{% endblock %}
+{% block extra_css %}
+<style>
+.cat-tab { border:1px solid var(--border); border-radius:3px; padding:0.6rem 1.2rem; color:var(--text-muted); font-size:0.82rem; letter-spacing:0.06em; text-transform:uppercase; text-decoration:none; transition:all 0.2s; }
+.cat-tab:hover, .cat-tab.active { background:var(--gold); color:var(--navy); border-color:var(--gold); }
+.prog-card img { width:100%; height:210px; object-fit:cover; }
+.cert-fee { font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:var(--gold); font-weight:700; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-hero" style="background-image:url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1400&q=70'); background-size:cover; background-position:center;">
+  <div style="position:absolute;inset:0;background:rgba(10,15,30,0.85);"></div>
+  <div class="container" style="position:relative; z-index:1;">
+    <div class="section-label">Learn. Certify. Advance.</div>
+    <h1 class="section-title mt-2">Online Training <span>Programs</span></h1>
+    <div class="section-divider"></div>
+    <p style="color:var(--text-muted); max-width:600px; font-size:1rem; line-height:1.8;">
+      Subscribe to our professional courses in Modern &amp; Tech Farming, Enterprise Management, and Financial Services. Earn your Certificate of Completion and unlock exclusive corporate opportunities.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <!-- CERT BANNER -->
+  <div style="background:linear-gradient(135deg,var(--navy-light),var(--navy)); border:1px solid var(--border); border-radius:4px; padding:2rem 2.5rem; margin-bottom:3rem; display:flex; flex-wrap:wrap; gap:2rem; align-items:center; justify-content:space-between;">
+    <div>
+      <div class="section-label">Certificate of Completion</div>
+      <h4 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin:0.3rem 0;">
+        Complete Any Program &amp; Earn Your Certificate
+      </h4>
+      <p style="color:var(--text-muted); font-size:0.88rem; margin:0;">
+        <i class="fas fa-star me-1" style="color:var(--gold);"></i>First priority employment &nbsp;·&nbsp;
+        <i class="fas fa-globe me-1" style="color:var(--gold);"></i>International market access &nbsp;·&nbsp;
+        <i class="fas fa-chart-pie me-1" style="color:var(--gold);"></i>Secondary shareholding &nbsp;·&nbsp;
+        <i class="fas fa-handshake me-1" style="color:var(--gold);"></i>Corporate partnerships
+      </p>
+    </div>
+    <div class="text-center">
+      <div class="cert-fee">$500 – $5,000</div>
+      <div style="font-size:0.75rem; color:var(--text-muted);">Certificate Fee</div>
+    </div>
+  </div>
+
+  <!-- CATEGORY FILTER -->
+  <div class="d-flex flex-wrap gap-2 mb-4">
+    <a href="{% url 'programs' %}" class="cat-tab {% if not selected_category %}active{% endif %}">All Programs</a>
+    {% for code, label in categories %}
+      <a href="?category={{ code }}" class="cat-tab {% if selected_category == code %}active{% endif %}">{{ label }}</a>
+    {% endfor %}
+  </div>
+
+  <!-- PROGRAMS GRID -->
+  {% if programs %}
+    <div class="row g-4">
+      {% for program in programs %}
+      <div class="col-lg-4 col-md-6">
+        <div class="ttg-card prog-card h-100">
+          {% if program.thumbnail %}
+            <img src="{{ program.thumbnail.url }}" alt="{{ program.title }}">
+          {% else %}
+            {% if program.category == 'farming' %}
+              <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&q=70" alt="Farming">
+            {% elif program.category == 'enterprise' %}
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=70" alt="Enterprise">
+            {% else %}
+              <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=70" alt="Finance">
+            {% endif %}
+          {% endif %}
+          <div class="p-4 d-flex flex-column h-100" style="flex:1;">
+            <span class="badge badge-gold mb-2" style="font-size:0.68rem; letter-spacing:0.08em;">{{ program.get_category_display }}</span>
+            <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); flex-grow:1;">{{ program.title }}</h5>
+            <p style="color:var(--text-muted); font-size:0.87rem; line-height:1.7;">{{ program.description|truncatewords:25 }}</p>
+            <div class="d-flex justify-content-between align-items-center mb-3" style="border-top:1px solid var(--border); padding-top:1rem; margin-top:auto;">
+              <span style="color:var(--text-muted); font-size:0.8rem;"><i class="fas fa-clock me-1" style="color:var(--gold)"></i>{{ program.duration_hours }}h</span>
+              <span style="color:var(--gold); font-size:0.85rem; font-weight:600;">Cert: ${{ program.certificate_fee_usd }}</span>
+            </div>
+            <div class="d-flex gap-2">
+              <a href="{% url 'program_detail' program.slug %}" class="btn-outline-gold btn btn-sm flex-fill text-center py-2">View Program</a>
+              {% if user.is_authenticated %}
+                <a href="{% url 'subscribe' program.slug %}" class="btn-gold btn btn-sm flex-fill text-center py-2">Enroll</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-5">
+      <i class="fas fa-graduation-cap" style="font-size:3rem; color:var(--border); margin-bottom:1rem;"></i>
+      <h4 style="font-family:'Cormorant Garamond',serif; color:var(--text-muted);">No Programs Available Yet</h4>
+      <p style="color:var(--text-muted);">Training programs will be listed here shortly. Check back soon.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

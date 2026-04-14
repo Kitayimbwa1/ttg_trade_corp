@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — T&TG Trade Corp{% endblock %}
+{% block extra_css %}
+<style>
+.dash-stat { padding: 1.5rem; }
+.dash-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--gold); font-weight: 700; }
+.dash-stat-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.status-pill {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.3rem 0.9rem; border-radius: 20px; font-size: 0.78rem;
+  font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.status-pending { background: rgba(234,179,8,0.15); color: #fde047; border: 1px solid rgba(234,179,8,0.3); }
+.status-approved { background: rgba(34,197,94,0.15); color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
+.status-rejected { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+.dash-nav { border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+.dash-nav .nav-link {
+  color: var(--text-muted) !important; font-size: 0.85rem;
+  padding: 0.75rem 1.2rem !important; border-bottom: 2px solid transparent;
+  letter-spacing: 0.04em; border-radius: 0;
+}
+.dash-nav .nav-link.active, .dash-nav .nav-link:hover { color: var(--gold) !important; border-bottom-color: var(--gold); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="background:var(--navy-mid); border-bottom:1px solid var(--border); padding:2rem 0;">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+      <div>
+        <div class="section-label">Welcome Back</div>
+        <h2 style="font-family:'Cormorant Garamond',serif; color:var(--cream); font-size:2rem; margin:0.3rem 0 0;">
+          {{ user.get_full_name|default:user.username }}
+        </h2>
+        {% if profile %}
+          <div class="mt-2">
+            <span class="status-pill status-{{ profile.status }}">
+              <i class="fas fa-circle" style="font-size:0.5rem;"></i>
+              {{ profile.get_status_display }}
+            </span>
+            <span class="ms-2" style="color:var(--text-muted); font-size:0.85rem;">{{ profile.get_market_type_display }}</span>
+            <span class="ms-2" style="color:var(--text-muted); font-size:0.85rem;">· {{ profile.get_country_of_residence_display }}</span>
+          </div>
+        {% endif %}
+      </div>
+      <div class="d-flex gap-2">
+        {% if profile %}
+          <a href="{% url 'profile' profile.profile_link_slug %}" class="btn-outline-gold btn btn-sm">
+            <i class="fas fa-user me-1"></i>View Profile
+          </a>
+          <a href="{% url 'edit_profile' %}" class="btn-gold btn btn-sm">
+            <i class="fas fa-edit me-1"></i>Edit Profile
+          </a>
+        {% else %}
+          <a href="{% url 'register' %}" class="btn-gold btn btn-sm">Complete Registration</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container py-4">
+  <!-- QUICK STATS -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="ttg-card dash-stat text-center">
+        <div class="dash-stat-num">{{ user.products.count }}</div>
+        <div class="dash-stat-label">Listed Products</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="ttg-card dash-stat text-center">
+        <div class="dash-stat-num">{{ user.orders.count }}</div>
+        <div class="dash-stat-label">Orders Made</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="ttg-card dash-stat text-center">
+        <div class="dash-stat-num">{{ user.rfqs.count }}</div>
+        <div class="dash-stat-label">RFQs Submitted</div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="ttg-card dash-stat text-center">
+        <div class="dash-stat-num">{{ user.subscriptions.count }}</div>
+        <div class="dash-stat-label">Training Enrolled</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD NAV -->
+  <ul class="nav dash-nav">
+    <li class="nav-item"><a class="nav-link active" href="{% url 'dashboard' %}">Overview</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'marketplace' %}">Marketplace</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'my_orders' %}">My Orders</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'my_rfqs' %}">My RFQs</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'forex_history' %}">Forex Transactions</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'my_programs' %}">My Training</a></li>
+  </ul>
+
+  <div class="row g-4">
+    <!-- QUICK ACTIONS -->
+    <div class="col-lg-4">
+      <div class="ttg-card p-4 h-100">
+        <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1.2rem;">Quick Actions</h5>
+        <div class="d-grid gap-2">
+          <a href="{% url 'add_product' %}" class="btn-gold btn text-start"><i class="fas fa-plus me-2"></i>List a Product</a>
+          <a href="{% url 'submit_rfq' %}" class="btn-outline-gold btn text-start"><i class="fas fa-file-alt me-2"></i>Submit RFQ</a>
+          <a href="{% url 'exchange' %}" class="btn-outline-gold btn text-start"><i class="fas fa-exchange-alt me-2"></i>Exchange Currency</a>
+          <a href="{% url 'programs' %}" class="btn-outline-gold btn text-start"><i class="fas fa-graduation-cap me-2"></i>Browse Training</a>
+        </div>
+
+        {% if profile %}
+        <hr style="border-color:var(--border); margin:1.5rem 0;">
+        <h6 style="color:var(--text-muted); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem;">Your Profile Link</h6>
+        <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:0.7rem 1rem; font-size:0.8rem; color:var(--text-muted); word-break:break-all;">
+          /profile/{{ profile.profile_link_slug }}/
+        </div>
+        <button onclick="navigator.clipboard.writeText(window.location.origin+'/profile/{{ profile.profile_link_slug }}/')"
+                class="btn-outline-gold btn btn-sm mt-2 w-100">
+          <i class="fas fa-copy me-1"></i>Copy Link
+        </button>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- STATUS & INFO -->
+    <div class="col-lg-8">
+      {% if profile %}
+        {% if profile.status == 'pending' %}
+        <div class="alert alert-info mb-4">
+          <i class="fas fa-clock me-2"></i>
+          <strong>Application Under Review</strong> — Your trader registration is being reviewed by our compliance team. You will be notified by email within 2–3 business days.
+        </div>
+        {% elif profile.status == 'approved' %}
+        <div class="alert alert-success mb-4">
+          <i class="fas fa-check-circle me-2"></i>
+          <strong>Account Approved</strong> — You are verified and can trade on the platform.
+        </div>
+        {% elif profile.status == 'rejected' %}
+        <div class="alert alert-danger mb-4">
+          <i class="fas fa-times-circle me-2"></i>
+          <strong>Application Rejected</strong> — Please contact us for more details or to re-submit with updated documents.
+        </div>
+        {% endif %}
+
+        <div class="ttg-card p-4">
+          <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1.5rem;">Profile Overview</h5>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div style="color:var(--text-muted); font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.3rem;">Full Name</div>
+              <div style="color:var(--cream);">{{ user.get_full_name }}</div>
+            </div>
+            <div class="col-sm-6">
+              <div style="color:var(--text-muted); font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.3rem;">Email</div>
+              <div style="color:var(--cream);">{{ user.email }}</div>
+            </div>
+            <div class="col-sm-6">
+              <div style="color:var(--text-muted); font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.3rem;">Country</div>
+              <div style="color:var(--cream);">{{ profile.get_country_of_residence_display }}</div>
+            </div>
+            <div class="col-sm-6">
+              <div style="color:var(--text-muted); font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.3rem;">Market</div>
+              <div style="color:var(--cream);">{{ profile.get_market_type_display }}</div>
+            </div>
+            <div class="col-sm-6">
+              <div style="color:var(--text-muted); font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.3rem;">Duration</div>
+              <div style="color:var(--cream);">{{ profile.get_trading_duration_display }}</div>
+            </div>
+            <div class="col-sm-6">
+              <div style="color:var(--text-muted); font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.3rem;">Certificate</div>
+              <div>{% if profile.has_certificate %}<span class="status-pill status-approved">Earned</span>{% else %}<span style="color:var(--text-muted)">Not yet</span>{% endif %}</div>
+            </div>
+            <div class="col-12">
+              <div style="color:var(--text-muted); font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.3rem;">Business Description</div>
+              <div style="color:var(--cream); font-size:0.9rem; line-height:1.7;">{{ profile.business_description|truncatewords:50 }}</div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="ttg-card p-5 text-center">
+          <i class="fas fa-user-plus" style="font-size:3rem; color:var(--gold); margin-bottom:1rem;"></i>
+          <h4 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Complete Your Registration</h4>
+          <p style="color:var(--text-muted);">You need to submit your trader profile to access the marketplace and trading features.</p>
+          <a href="{% url 'register' %}" class="btn-gold btn mt-2">Submit Profile</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

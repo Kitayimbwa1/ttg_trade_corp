@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Forex History — T&TG Trade Corp{% endblock %}
+{% block content %}
+<div class="page-hero"><div class="container">
+  <div class="section-label">Forex Bureau</div>
+  <h1 class="section-title mt-2">Transaction <span>History</span></h1>
+</div></div>
+<div class="container py-5">
+  {% if transactions %}
+  <table class="table ttg-table">
+    <thead><tr><th>Reference</th><th>Type</th><th>From</th><th>To</th><th>Amount</th><th>Rate</th><th>Status</th><th>Date</th></tr></thead>
+    <tbody>
+      {% for tx in transactions %}
+      <tr>
+        <td style="color:var(--gold); font-size:0.82rem;">{{ tx.reference }}</td>
+        <td>{{ tx.get_transaction_type_display }}</td>
+        <td>{{ tx.amount_from }} {{ tx.from_currency }}</td>
+        <td>{{ tx.amount_to }} {{ tx.to_currency }}</td>
+        <td>{{ tx.amount_from }}</td>
+        <td>{{ tx.rate_used }}</td>
+        <td><span class="badge badge-navy">{{ tx.get_status_display }}</span></td>
+        <td style="font-size:0.82rem; color:var(--text-muted);">{{ tx.created_at|date:"M d, Y" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="text-center py-5">
+    <i class="fas fa-exchange-alt" style="font-size:3rem; color:var(--border); margin-bottom:1rem;"></i>
+    <h4 style="font-family:'Cormorant Garamond',serif; color:var(--text-muted);">No Transactions Yet</h4>
+    <a href="{% url 'exchange' %}" class="btn-gold btn mt-3">Exchange Currency</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

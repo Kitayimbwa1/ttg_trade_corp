@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}List a Product — T&TG Trade Corp{% endblock %}
+{% block content %}
+<div class="page-hero"><div class="container">
+  <div class="section-label">Seller Portal</div>
+  <h1 class="section-title mt-2">List a <span>Product</span></h1>
+</div></div>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <div class="ttg-card p-5">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Product Title *</label>
+              <input type="text" name="title" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Category</label>
+              <select name="category" class="form-select">
+                <option value="">-- Select Category --</option>
+                {% for cat in form.category.field.queryset %}
+                  <option value="{{ cat.pk }}">{{ cat.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Country *</label>
+              <select name="country" class="form-select">
+                <option value="CA">Canada</option>
+                <option value="UG">Uganda</option>
+                <option value="NL">Netherlands</option>
+                <option value="JP">Japan</option>
+                <option value="KE">Kenya</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Price *</label>
+              <input type="number" name="price" class="form-control" min="0" step="0.01" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Currency</label>
+              <select name="currency" class="form-select">
+                <option>USD</option><option>CAD</option><option>UGX</option>
+                <option>EUR</option><option>KES</option><option>JPY</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Market Type</label>
+              <select name="market_type" class="form-select">
+                <option value="local">Local</option>
+                <option value="international">International</option>
+                <option value="both">Both</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Stock Quantity</label>
+              <input type="number" name="stock_quantity" class="form-control" value="1" min="1">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Product Image</label>
+              <input type="file" name="image" class="form-control" accept="image/*">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Description *</label>
+              <textarea name="description" class="form-control" rows="4" required></textarea>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn-gold btn px-5">Publish Product</button>
+              <a href="{% url 'marketplace' %}" class="btn-outline-gold btn ms-2 px-4">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

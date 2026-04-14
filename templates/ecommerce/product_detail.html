@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.title }} — T&TG Trade Corp{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row g-5">
+    <div class="col-lg-6">
+      {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width:100%; border-radius:4px; border:1px solid var(--border);">
+      {% else %}
+        <div style="width:100%; height:400px; background:var(--navy-light); border:1px solid var(--border); border-radius:4px; display:flex; align-items:center; justify-content:center;">
+          <i class="fas fa-box" style="font-size:4rem; color:var(--border);"></i>
+        </div>
+      {% endif %}
+    </div>
+    <div class="col-lg-6">
+      {% if product.category %}<span class="badge badge-navy mb-2">{{ product.category.name }}</span>{% endif %}
+      <h1 style="font-family:'Cormorant Garamond',serif; color:var(--cream); font-size:2.2rem;">{{ product.title }}</h1>
+      <div style="font-family:'Cormorant Garamond',serif; font-size:2rem; color:var(--gold); margin:0.5rem 0;">{{ product.currency }} {{ product.price }}</div>
+      <div style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem;">
+        <i class="fas fa-user me-2" style="color:var(--gold);"></i>{{ product.seller.get_full_name|default:product.seller.username }}
+        &nbsp;·&nbsp; <i class="fas fa-map-marker-alt me-1" style="color:var(--gold);"></i>{{ product.get_country_display }}
+        &nbsp;·&nbsp; <i class="fas fa-eye me-1" style="color:var(--gold);"></i>{{ product.views_count }} views
+        &nbsp;·&nbsp; Stock: {{ product.stock_quantity }}
+      </div>
+      <p style="color:var(--text-muted); line-height:1.9;">{{ product.description }}</p>
+      <div class="d-flex gap-3 mt-4">
+        {% if user.is_authenticated %}
+          <a href="{% url 'place_order' product.slug %}" class="btn-gold btn px-5 py-3">Order Now</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn-gold btn px-5 py-3">Sign In to Order</a>
+        {% endif %}
+        <a href="{% url 'marketplace' %}" class="btn-outline-gold btn px-4 py-3">Back</a>
+      </div>
+    </div>
+  </div>
+  {% if related %}
+  <div class="mt-5">
+    <h4 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1.5rem;">Related Products</h4>
+    <div class="row g-4">
+      {% for p in related %}
+      <div class="col-md-3">
+        <div class="ttg-card">
+          {% if p.image %}<img src="{{ p.image.url }}" style="width:100%; height:160px; object-fit:cover;">{% endif %}
+          <div class="p-3">
+            <h6 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">{{ p.title }}</h6>
+            <div style="color:var(--gold);">{{ p.currency }} {{ p.price }}</div>
+            <a href="{% url 'product_detail' p.slug %}" class="btn-outline-gold btn btn-sm mt-2 w-100">View</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

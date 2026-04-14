@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Avon Points Dashboard - T&TG Trade Corp{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="section-title mb-2">Avon Points Dashboard</h1>
+      <p class="section-subtitle">Manage your rewards and convert points to funds</p>
+    </div>
+  </div>
+
+  <!-- Points Summary Cards -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-3">
+      <div class="ttg-card p-4 text-center">
+        <div class="stat-number">{{ account.available_points|floatformat:0 }}</div>
+        <div class="stat-label">Available Points</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="ttg-card p-4 text-center">
+        <div class="stat-number">{{ account.total_earned_points|floatformat:0 }}</div>
+        <div class="stat-label">Total Earned</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="ttg-card p-4 text-center">
+        <div class="stat-number">{{ account.total_redeemed_points|floatformat:0 }}</div>
+        <div class="stat-label">Total Redeemed</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="ttg-card p-4 text-center">
+        <div class="stat-number">${{ account.available_points|floatformat:2 }}</div>
+        <div class="stat-label">Estimated Value</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="row mb-5">
+    <div class="col-md-12">
+      <div class="ttg-card p-4">
+        <h5 class="mb-3" style="color:var(--gold)">Quick Actions</h5>
+        <div class="d-flex gap-3 flex-wrap">
+          <a href="{% url 'create_sell_order' %}" class="btn btn-gold">
+            <i class="fas fa-dollar-sign me-2"></i>Create Sell Order
+          </a>
+          <a href="{% url 'redeem_points' %}" class="btn btn-outline-gold">
+            <i class="fas fa-gift me-2"></i>Redeem Points
+          </a>
+          <a href="{% url 'referral_info' %}" class="btn btn-outline-gold">
+            <i class="fas fa-users me-2"></i>My Referrals
+          </a>
+          <a href="{% url 'avon_transactions' %}" class="btn btn-outline-gold">
+            <i class="fas fa-list me-2"></i>View All Transactions
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How Avon Points Work -->
+  <div class="row mb-5">
+    <div class="col-md-12">
+      <div class="ttg-card p-4">
+        <h5 class="mb-3" style="color:var(--gold)"><i class="fas fa-info-circle me-2"></i>How Avon Points Work</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <h6 style="color:var(--cream)">Earning Points</h6>
+            <ul style="color:var(--text-muted)">
+              <li><strong>5.5%</strong> of purchase amount as end user/consumer</li>
+              <li><strong>8.5%</strong> of purchase amount when you refer a buyer</li>
+              <li>Points earned on delivered orders only</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h6 style="color:var(--cream)">Using Points</h6>
+            <ul style="color:var(--text-muted)">
+              <li>Convert to funds through quarterly sell orders (Q1-Q4)</li>
+              <li>Minimum 3-month execution period</li>
+              <li>Pay insurance premiums</li>
+              <li>Transfer to trading platform</li>
+              <li>Invest in real estate</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="row mb-5">
+    <div class="col-md-12">
+      <div class="ttg-card p-4">
+        <h5 class="mb-3" style="color:var(--gold)">Recent Transactions</h5>
+        {% if transactions %}
+        <div class="table-responsive">
+          <table class="table ttg-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Source</th>
+                <th>Balance After</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for txn in transactions %}
+              <tr>
+                <td>{{ txn.created_at|date:"M d, Y" }}</td>
+                <td>
+                  {% if txn.transaction_type == 'earn' %}
+                  <span class="badge bg-success">Earned</span>
+                  {% else %}
+                  <span class="badge bg-warning text-dark">Redeemed</span>
+                  {% endif %}
+                </td>
+                <td>{{ txn.amount|floatformat:2 }}</td>
+                <td>{{ txn.source }}</td>
+                <td>{{ txn.balance_after|floatformat:2 }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p style="color:var(--text-muted)">No transactions yet. Start earning by making purchases or referring buyers!</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Pending Sell Orders -->
+  {% if sell_orders %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="ttg-card p-4">
+        <h5 class="mb-3" style="color:var(--gold)">Pending Sell Orders</h5>
+        <div class="table-responsive">
+          <table class="table ttg-table">
+            <thead>
+              <tr>
+                <th>Date Created</th>
+                <th>Quarter</th>
+                <th>Points</th>
+                <th>USD Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in sell_orders %}
+              <tr>
+                <td>{{ order.created_at|date:"M d, Y" }}</td>
+                <td>{{ order.get_quarter_display }}</td>
+                <td>{{ order.points_amount|floatformat:2 }}</td>
+                <td>${{ order.usd_amount|floatformat:2 }}</td>
+                <td>
+                  <span class="badge 
+                    {% if order.status == 'completed' %}bg-success
+                    {% elif order.status == 'processing' %}bg-info
+                    {% elif order.status == 'cancelled' %}bg-danger
+                    {% else %}bg-warning text-dark{% endif %}">
+                    {{ order.get_status_display }}
+                  </span>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

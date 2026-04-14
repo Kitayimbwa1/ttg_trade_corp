@@ -1,0 +1,507 @@
+{% extends 'base.html' %}
+{% block title %}T&TG Trade Corp — Global Trading & Investment{% endblock %}
+
+{% block extra_css %}
+<style>
+/* HERO */
+.hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=80');
+  background-size: cover; background-position: center;
+  filter: brightness(0.22);
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(10,15,30,0.92) 40%, rgba(26,37,64,0.6) 100%);
+}
+.hero-content { position: relative; z-index: 2; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  color: var(--gold); font-size: 0.75rem; letter-spacing: 0.22em;
+  text-transform: uppercase; font-weight: 500; margin-bottom: 1.5rem;
+}
+.hero-eyebrow::before {
+  content: ''; width: 32px; height: 1px; background: var(--gold);
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 300; line-height: 1.08; color: var(--cream);
+  margin-bottom: 1.5rem;
+}
+.hero-title strong { font-weight: 700; color: var(--gold); }
+.hero-sub {
+  color: var(--text-muted); font-size: 1.05rem; line-height: 1.8;
+  max-width: 560px; margin-bottom: 2.5rem;
+}
+.hero-stats {
+  display: flex; gap: 3rem; margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+}
+.hero-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem; font-weight: 700; color: var(--gold);
+}
+.hero-stat-label { font-size: 0.78rem; color: var(--text-muted); letter-spacing: 0.08em; margin-top: 0.2rem; }
+.hero-image-panel {
+  position: relative; z-index: 2;
+}
+.hero-img-main {
+  width: 100%; border-radius: 4px;
+  border: 1px solid var(--border);
+  object-fit: cover; height: 480px;
+}
+.hero-img-float {
+  position: absolute; bottom: -30px; left: -30px;
+  width: 200px; height: 140px; object-fit: cover;
+  border-radius: 3px; border: 3px solid var(--navy);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.hero-badge {
+  position: absolute; top: 20px; right: -15px;
+  background: var(--gold); color: var(--navy);
+  padding: 0.8rem 1.2rem; border-radius: 3px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-weight: 700;
+  text-align: center; line-height: 1.3;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+}
+
+/* TICKER */
+.ticker-bar {
+  background: var(--gold); padding: 0.6rem 0;
+  overflow: hidden; white-space: nowrap;
+}
+.ticker-inner { display: inline-flex; gap: 3rem; animation: ticker 30s linear infinite; }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ticker-item { color: var(--navy); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; }
+.ticker-sep { color: rgba(10,15,30,0.4); }
+
+/* COUNTRIES */
+.countries-section { padding: 5rem 0; background: var(--navy-mid); }
+.country-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden;
+  transition: all 0.3s;
+}
+.country-card:hover { transform: translateY(-6px); border-color: var(--gold); }
+.country-card img { width: 100%; height: 180px; object-fit: cover; filter: brightness(0.7); transition: filter 0.3s; }
+.country-card:hover img { filter: brightness(0.9); }
+.country-card-body { padding: 1.2rem 1.4rem; }
+.country-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--cream); }
+.country-tag { font-size: 0.72rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* SERVICES */
+.services-section { padding: 6rem 0; }
+.service-item {
+  border-left: 2px solid var(--border);
+  padding: 1.5rem 0 1.5rem 2rem;
+  margin-bottom: 0.5rem;
+  transition: border-color 0.2s;
+}
+.service-item:hover { border-color: var(--gold); }
+.service-icon { color: var(--gold); font-size: 1.4rem; margin-bottom: 0.75rem; }
+.service-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--cream); margin-bottom: 0.5rem; }
+.service-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+
+/* PROCESS */
+.process-section { padding: 5rem 0; background: var(--navy-light); }
+.process-step { text-align: center; padding: 2rem 1rem; }
+.step-num {
+  width: 56px; height: 56px; border-radius: 50%;
+  border: 1px solid var(--gold);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; color: var(--gold); margin-bottom: 1.2rem;
+}
+.step-title { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; color: var(--cream); margin-bottom: 0.5rem; }
+.step-desc { color: var(--text-muted); font-size: 0.85rem; line-height: 1.7; }
+.step-connector { display: flex; align-items: center; justify-content: center; padding-top: 1rem; }
+.step-connector::after { content: '→'; color: var(--gold); font-size: 1.5rem; }
+
+/* CTA BANNER */
+.cta-banner {
+  background: linear-gradient(135deg, var(--navy-light) 0%, var(--navy) 100%);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4rem;
+  position: relative; overflow: hidden;
+}
+.cta-banner::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 280px; height: 280px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,0.08), transparent 70%);
+}
+
+/* TRAINING PREVIEW */
+.training-section { padding: 5rem 0; background: var(--navy-mid); }
+.training-card img { width: 100%; height: 200px; object-fit: cover; }
+.training-badge { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="container py-5">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 hero-content">
+        <div class="hero-eyebrow">Toronto-Based Global Corporation</div>
+        <h1 class="hero-title">
+          Trade <strong>Globally,</strong><br>
+          Grow <strong>Locally</strong>
+        </h1>
+        <p class="hero-sub">
+          T&TG Trade Corp connects businesses and individuals to domestic and international markets across
+          Canada, Uganda, Netherlands, Japan, and Kenya — through a secure, verified trading ecosystem.
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="{% url 'register' %}" class="btn-gold btn">Start Trading Today</a>
+          <a href="{% url 'marketplace' %}" class="btn-outline-gold btn">Browse Marketplace</a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-num">5</div>
+            <div class="hero-stat-label">Countries Served</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">4</div>
+            <div class="hero-stat-label">Business Lines</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">7+</div>
+            <div class="hero-stat-label">Currencies Supported</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 offset-lg-1 d-none d-lg-block hero-image-panel">
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80"
+             alt="Global Trade Operations" class="hero-img-main">
+        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&q=80"
+             alt="Financial Markets" class="hero-img-float">
+        <div class="hero-badge">
+          Founded<br>Oct 2026<br>Toronto
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-inner">
+    <span class="ticker-item">🇨🇦 CANADA</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">🇺🇬 UGANDA</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">🇳🇱 NETHERLANDS</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">🇯🇵 JAPAN</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">🇰🇪 KENYA</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">E-COMMERCE TRADING</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">IMPORT &amp; EXPORT</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">FOREIGN EXCHANGE</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">STRATEGIC INVESTMENT</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">🇨🇦 CANADA</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">🇺🇬 UGANDA</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">🇳🇱 NETHERLANDS</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">🇯🇵 JAPAN</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">🇰🇪 KENYA</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">E-COMMERCE TRADING</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">IMPORT &amp; EXPORT</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">FOREIGN EXCHANGE</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">STRATEGIC INVESTMENT</span><span class="ticker-sep">◆</span>
+  </div>
+</div>
+
+<!-- COUNTRIES -->
+<section class="countries-section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-label">Areas of Operation</div>
+      <h2 class="section-title mt-2">Our <span>Global Footprint</span></h2>
+      <div class="section-divider mx-auto"></div>
+      <p style="color:var(--text-muted); max-width:600px; margin:0 auto;">
+        We operate dedicated local trading platforms in five countries, enabling seamless domestic commerce alongside international cross-border trade.
+      </p>
+    </div>
+    <div class="row g-4">
+      {% with countries=country_list %}
+      <div class="col-lg col-md-4 col-6">
+        <div class="country-card">
+          <img src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=500&q=70" alt="Canada">
+          <div class="country-card-body">
+            <div class="country-tag">HQ · North America</div>
+            <div class="country-name">Canada</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg col-md-4 col-6">
+        <div class="country-card">
+          <img src="https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=500&q=70" alt="Uganda">
+          <div class="country-card-body">
+            <div class="country-tag">East Africa</div>
+            <div class="country-name">Uganda</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg col-md-4 col-6">
+        <div class="country-card">
+          <img src="https://images.unsplash.com/photo-1468940584728-c61d28e8c7e6?w=500&q=70" alt="Netherlands">
+          <div class="country-card-body">
+            <div class="country-tag">Europe</div>
+            <div class="country-name">Netherlands</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg col-md-6 col-6">
+        <div class="country-card">
+          <img src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=500&q=70" alt="Japan">
+          <div class="country-card-body">
+            <div class="country-tag">East Asia</div>
+            <div class="country-name">Japan</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg col-md-6 col-6">
+        <div class="country-card">
+          <img src="https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=500&q=70" alt="Kenya">
+          <div class="country-card-body">
+            <div class="country-tag">East Africa</div>
+            <div class="country-name">Kenya</div>
+          </div>
+        </div>
+      </div>
+      {% endwith %}
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section">
+  <div class="container">
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-4">
+        <div class="section-label">What We Offer</div>
+        <h2 class="section-title mt-2">Four Pillars of <span>Our Business</span></h2>
+        <div class="section-divider"></div>
+        <p style="color:var(--text-muted); line-height:1.8; margin-bottom:2rem;">
+          From e-commerce and import/export to forex and investment — our integrated platform supports every stage of global trade.
+        </p>
+        <a href="{% url 'services' %}" class="btn-outline-gold btn">View All Services</a>
+        <div class="mt-5">
+          <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=75"
+               alt="Business Services" style="width:100%; border-radius:4px; border:1px solid var(--border); opacity:0.85;">
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="service-item">
+              <div class="service-icon"><i class="fas fa-globe"></i></div>
+              <div class="service-title">E-Commerce Trading Portal</div>
+              <div class="service-desc">A dual-mode marketplace for local and international buyers and sellers, with country-specific storefronts, verified profiles, and secure payment channels.</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="service-item">
+              <div class="service-icon"><i class="fas fa-ship"></i></div>
+              <div class="service-title">Import &amp; Export</div>
+              <div class="service-desc">Facilitating cross-border goods movement for registered partners. We coordinate logistics, compliance, and documentation for seamless international shipments.</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="service-item">
+              <div class="service-icon"><i class="fas fa-exchange-alt"></i></div>
+              <div class="service-title">Foreign Exchange</div>
+              <div class="service-desc">Competitive multi-currency exchange solutions for businesses and individuals. Supporting USD, CAD, UGX, KES, EUR, JPY, and more through our forex bureau.</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="service-item">
+              <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+              <div class="service-title">Strategic Investment</div>
+              <div class="service-desc">Long-term investment activities and brokerage services aimed at generating sustainable financial growth across multiple sectors and regions.</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="service-item">
+              <div class="service-icon"><i class="fas fa-graduation-cap"></i></div>
+              <div class="service-title">Online Training Programs</div>
+              <div class="service-desc">Certified courses in Modern Farming, Enterprise Management, and Financial Services. Certificate of Completion earns priority access to corporate partnerships.</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="service-item">
+              <div class="service-icon"><i class="fas fa-tv"></i></div>
+              <div class="service-title">TV Program &amp; Advertising</div>
+              <div class="service-desc">A broadcast and digital media channel for trade news, business education, and advertising opportunities for registered platform users and businesses.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="process-section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-label">Getting Started</div>
+      <h2 class="section-title mt-2">How to <span>Join & Trade</span></h2>
+      <div class="section-divider mx-auto"></div>
+    </div>
+    <div class="row g-0">
+      <div class="col-md-3">
+        <div class="process-step">
+          <div class="step-num">01</div>
+          <div class="step-title">Choose Your Market</div>
+          <div class="step-desc">Select Local Market or International Market, then choose your country of residence.</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="process-step">
+          <div class="step-num">02</div>
+          <div class="step-title">Register &amp; Verify</div>
+          <div class="step-desc">Submit your identity documents, selfie, declaration agreement, and business description.</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="process-step">
+          <div class="step-num">03</div>
+          <div class="step-title">Build Your Profile</div>
+          <div class="step-desc">Create your trader profile, upload products or services, and share your unique profile link.</div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="process-step">
+          <div class="step-num">04</div>
+          <div class="step-title">Trade Securely</div>
+          <div class="step-desc">Buy and sell using our verified payment systems — Mobile Money, e-transfer, or bank transfer.</div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="{% url 'register' %}" class="btn-gold btn">Create Your Account</a>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINING PREVIEW -->
+<section class="training-section">
+  <div class="container">
+    <div class="row align-items-center mb-5">
+      <div class="col">
+        <div class="section-label">Learn &amp; Earn</div>
+        <h2 class="section-title mt-2">Online Training <span>Programs</span></h2>
+      </div>
+      <div class="col-auto">
+        <a href="{% url 'programs' %}" class="btn-outline-gold btn">All Programs</a>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="ttg-card training-card">
+          <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&q=75" alt="Tech Farming">
+          <div class="p-4">
+            <span class="badge badge-gold training-badge mb-2">Modern &amp; Tech Farming</span>
+            <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Agri-Tech &amp; Precision Farming</h5>
+            <p style="color:var(--text-muted); font-size:0.87rem;">Master modern agricultural techniques and technology-driven farming solutions for African and global markets.</p>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <span style="color:var(--gold); font-size:0.85rem;"><i class="fas fa-certificate me-1"></i>Certificate Available</span>
+              <a href="{% url 'programs' %}?category=farming" class="btn-outline-gold btn btn-sm py-1 px-3">Explore</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="ttg-card training-card">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=75" alt="Enterprise Programs">
+          <div class="p-4">
+            <span class="badge badge-gold training-badge mb-2">Mid-Market Enterprise</span>
+            <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Corporate &amp; Business Management</h5>
+            <p style="color:var(--text-muted); font-size:0.87rem;">Build leadership and management skills for growing businesses looking to scale across international markets.</p>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <span style="color:var(--gold); font-size:0.85rem;"><i class="fas fa-certificate me-1"></i>Certificate Available</span>
+              <a href="{% url 'programs' %}?category=enterprise" class="btn-outline-gold btn btn-sm py-1 px-3">Explore</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="ttg-card training-card">
+          <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=75" alt="Financial Services">
+          <div class="p-4">
+            <span class="badge badge-gold training-badge mb-2">Financial Services</span>
+            <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Finance, Forex &amp; Investment</h5>
+            <p style="color:var(--text-muted); font-size:0.87rem;">Understand global finance, foreign exchange markets, and investment strategies for long-term financial growth.</p>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <span style="color:var(--gold); font-size:0.85rem;"><i class="fas fa-certificate me-1"></i>Certificate Available</span>
+              <a href="{% url 'programs' %}?category=finance" class="btn-outline-gold btn btn-sm py-1 px-3">Explore</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12">
+        <div style="background:var(--card-bg); border:1px solid var(--border); border-radius:4px; padding:1.5rem 2rem;">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h5 style="color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:1.3rem; margin-bottom:0.3rem;">
+                Certificate of Completion — $500 to $5,000
+              </h5>
+              <p style="color:var(--text-muted); font-size:0.88rem; margin:0;">
+                Earn your certified qualification. Certificate holders gain first priority employment, eligibility for international trade, secondary shares, and corporate partnership opportunities.
+              </p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+              <a href="{% url 'programs' %}" class="btn-gold btn">Enroll Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:5rem 0;">
+  <div class="container">
+    <div class="cta-banner">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <div class="section-label">Join Our Platform</div>
+          <h2 class="section-title mt-2" style="font-size:2.5rem;">
+            Ready to Trade <span>Globally?</span>
+          </h2>
+          <p style="color:var(--text-muted); font-size:0.95rem; margin-top:1rem; max-width:520px; line-height:1.8;">
+            Register today to access our verified trading marketplace, foreign exchange services, and training programs. Build your profile, list your products, and connect with traders across 5 countries.
+          </p>
+        </div>
+        <div class="col-lg-5 text-lg-end">
+          <div class="d-flex flex-column flex-sm-row gap-3 justify-content-lg-end">
+            <a href="{% url 'register' %}" class="btn-gold btn">Register as Trader</a>
+            <a href="{% url 'contact' %}" class="btn-outline-gold btn">Contact Us</a>
+          </div>
+          <p style="color:var(--text-muted); font-size:0.78rem; margin-top:1rem;">
+            All registrations are verified through our physical offices. Fraud-free platform.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

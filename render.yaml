@@ -1,0 +1,31 @@
+services:
+  # Web Service
+  - type: web
+    name: ttg-trade-corp
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn ttg_trade.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ttg-trade-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        sync: false
+    
+  # PostgreSQL Database
+  - type: pgsql
+    name: ttg-trade-db
+    region: oregon
+    plan: free
+    databaseName: ttg_trade_db
+    databaseUser: ttg_trade_user

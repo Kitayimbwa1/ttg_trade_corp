@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us — T&TG Trade Corp{% endblock %}
+{% block content %}
+
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">Get In Touch</div>
+    <h1 class="section-title mt-2">Contact <span>T&TG Trade Corp</span></h1>
+    <div class="section-divider"></div>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-5">
+    <div class="col-lg-7">
+      <div class="ttg-card p-4">
+        <h4 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1.5rem;">Send Us a Message</h4>
+        <form method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Full Name *</label>
+              <input type="text" name="name" class="form-control" required value="{{ form.name.value|default:'' }}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email Address *</label>
+              <input type="email" name="email" class="form-control" required value="{{ form.email.value|default:'' }}">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Subject *</label>
+              <input type="text" name="subject" class="form-control" required value="{{ form.subject.value|default:'' }}">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Message *</label>
+              <textarea name="message" class="form-control" rows="6" required>{{ form.message.value|default:'' }}</textarea>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn-gold btn px-5">Send Message</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="ttg-card p-4 mb-4">
+        <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1.5rem;">Head Office</h5>
+        <div class="d-flex gap-3 mb-3">
+          <i class="fas fa-map-marker-alt mt-1" style="color:var(--gold); width:20px;"></i>
+          <div>
+            <div style="color:var(--cream); font-weight:500;">Toronto, Ontario, Canada</div>
+            <div style="color:var(--text-muted); font-size:0.88rem;">M1G 1L8</div>
+          </div>
+        </div>
+        <div class="d-flex gap-3 mb-3">
+          <i class="fas fa-phone mt-1" style="color:var(--gold); width:20px;"></i>
+          <div>
+            <a href="tel:+14168323512" style="color:var(--cream);">+1 (416) 832 3512</a>
+          </div>
+        </div>
+        <div class="d-flex gap-3 mb-3">
+          <i class="fas fa-envelope mt-1" style="color:var(--gold); width:20px;"></i>
+          <div>
+            <a href="mailto:info@tom.grouptradecorp.ca" style="color:var(--cream);">tom.grouptradecorp.ca</a>
+          </div>
+        </div>
+        <img src="https://images.unsplash.com/photo-1517935706615-2717063c2225?w=600&q=75"
+             alt="Toronto" style="width:100%; border-radius:3px; margin-top:1rem; opacity:0.8;">
+      </div>
+
+      <div class="ttg-card p-4">
+        <h6 style="color:var(--gold); font-size:0.78rem; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1rem;">Regional Offices</h6>
+        <div style="color:var(--text-muted); font-size:0.88rem; line-height:2.2;">
+          <div>🇺🇬 Uganda Office</div>
+          <div>🇳🇱 Netherlands Office</div>
+          <div>🇰🇪 Kenya Office</div>
+          <div>🇯🇵 Japan Office</div>
+          <div>🇺🇸 USA Operations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

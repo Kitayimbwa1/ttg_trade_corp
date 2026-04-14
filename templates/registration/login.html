@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Sign In — T&TG Trade Corp{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="text-center mb-4">
+        <h2 style="font-family:'Cormorant Garamond',serif; color:var(--cream); font-size:2.2rem;">Welcome Back</h2>
+        <p style="color:var(--text-muted);">Sign in to your T&TG Trade Corp account</p>
+      </div>
+      <div class="ttg-card p-4">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" autofocus required>
+          </div>
+          <div class="mb-4">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+          {% if form.errors %}
+            <div class="alert alert-danger mb-3">Invalid username or password.</div>
+          {% endif %}
+          <button type="submit" class="btn-gold btn w-100 py-3">Sign In</button>
+        </form>
+        <div class="text-center mt-3">
+          <span style="color:var(--text-muted); font-size:0.88rem;">Don't have an account?</span>
+          <a href="{% url 'register' %}" style="color:var(--gold); font-size:0.88rem; margin-left:0.4rem;">Register here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

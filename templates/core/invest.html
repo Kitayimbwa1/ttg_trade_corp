@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% block title %}Investment & Partnership — T&TG Trade Corp{% endblock %}
+{% block extra_css %}
+<style>
+.invest-hero {
+  background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=80');
+  background-size: cover; background-position: center;
+  min-height: 55vh; display: flex; align-items: center; position: relative;
+}
+.invest-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(10,15,30,0.94) 55%, rgba(26,37,64,0.7));
+}
+.invest-hero .container { position: relative; z-index: 1; }
+.opportunity-card { padding: 2rem; border-left: 2px solid var(--border); margin-bottom: 0.5rem; transition: border-color 0.2s; }
+.opportunity-card:hover { border-color: var(--gold); }
+.tier-card { padding: 2rem; text-align: center; }
+.tier-amount { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--gold); font-weight: 700; }
+.tier-label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="invest-hero">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-7">
+        <div class="section-label">Strategic Investment</div>
+        <h1 class="section-title mt-2" style="font-size:clamp(2.5rem,5vw,4.5rem);">
+          Invest in <span>Global Trade</span>
+        </h1>
+        <div class="section-divider"></div>
+        <p class="lead mb-4" style="max-width:540px;">
+          T&TG Trade Corp is building the infrastructure for the next generation of global commerce.
+          Join us as a strategic investor, partner, or secondary shareholder.
+        </p>
+        <div class="d-flex gap-3 flex-wrap">
+          <a href="{% url 'contact' %}" class="btn-gold btn px-5 py-3">Invest With Us</a>
+          <a href="{% url 'about' %}" class="btn-outline-gold btn px-4 py-3">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT PHILOSOPHY -->
+<section style="padding:5rem 0; background:var(--navy-mid);">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5">
+        <div class="section-label">Our Philosophy</div>
+        <h2 class="section-title mt-2">We Invest in <span>Careers & Business</span></h2>
+        <div class="section-divider"></div>
+        <p style="color:var(--muted); line-height:1.9; font-size:0.95rem;">
+          <em style="color:var(--gold-light);">"We are not looking to make a lot of money — we are investing in business and careers."</em>
+          <br><br>
+          This philosophy drives every decision at T&TG Trade Corp. Our investment activities focus on
+          sustainable, long-term value creation across our five operating regions — building trade
+          infrastructure, developing human capital, and enabling emerging-market entrepreneurs to access
+          global opportunities.
+        </p>
+        <div class="row g-3 mt-2">
+          <div class="col-6">
+            <div class="ttg-card p-3 text-center no-hover">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:2rem; color:var(--gold); font-weight:700;">5</div>
+              <div style="font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;">Countries</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="ttg-card p-3 text-center no-hover">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:2rem; color:var(--gold); font-weight:700;">4</div>
+              <div style="font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;">Business Lines</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
+             alt="Investment Strategy"
+             style="width:100%; border-radius:4px; border:1px solid var(--border); opacity:0.85;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT OPPORTUNITIES -->
+<section style="padding:5rem 0;">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-label">Investment Areas</div>
+      <h2 class="section-title mt-2">Where We <span>Invest</span></h2>
+      <div class="section-divider center"></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="opportunity-card ttg-card fade-up">
+          <div class="d-flex gap-3 align-items-start">
+            <div class="icon-box icon-box-lg"><i class="fas fa-globe"></i></div>
+            <div>
+              <h4 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">E-Commerce Infrastructure</h4>
+              <p style="color:var(--muted); font-size:0.9rem; line-height:1.8; margin:0.5rem 0;">
+                Building country-specific trading platforms across Canada, Uganda, Netherlands, Japan, and Kenya.
+                Each platform serves local market needs while connecting to our global network.
+              </p>
+              <span class="badge badge-navy">Technology</span>
+              <span class="badge badge-navy ms-1">Trade</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="opportunity-card ttg-card fade-up" style="transition-delay:0.1s;">
+          <div class="d-flex gap-3 align-items-start">
+            <div class="icon-box icon-box-lg"><i class="fas fa-exchange-alt"></i></div>
+            <div>
+              <h4 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Forex Bureau & Brokerage</h4>
+              <p style="color:var(--muted); font-size:0.9rem; line-height:1.8; margin:0.5rem 0;">
+                General Investment Dealer operations providing foreign exchange and brokerage services
+                across multiple currency corridors. Revenue from spreads and transaction fees.
+              </p>
+              <span class="badge badge-navy">Finance</span>
+              <span class="badge badge-navy ms-1">Forex</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="opportunity-card ttg-card fade-up" style="transition-delay:0.2s;">
+          <div class="d-flex gap-3 align-items-start">
+            <div class="icon-box icon-box-lg"><i class="fas fa-graduation-cap"></i></div>
+            <div>
+              <h4 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Human Capital & Training</h4>
+              <p style="color:var(--muted); font-size:0.9rem; line-height:1.8; margin:0.5rem 0;">
+                Online training programmes with certificate revenue ($500–$5,000 per learner),
+                creating a pipeline of skilled professionals who become corporate partners and shareholders.
+              </p>
+              <span class="badge badge-navy">Education</span>
+              <span class="badge badge-navy ms-1">Revenue</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="opportunity-card ttg-card fade-up" style="transition-delay:0.3s;">
+          <div class="d-flex gap-3 align-items-start">
+            <div class="icon-box icon-box-lg"><i class="fas fa-ship"></i></div>
+            <div>
+              <h4 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Import/Export Operations</h4>
+              <p style="color:var(--muted); font-size:0.9rem; line-height:1.8; margin:0.5rem 0;">
+                Facilitating cross-border goods movement for registered partners. Physical office
+                infrastructure in key cities for administrative, storage, and counter-trading services.
+              </p>
+              <span class="badge badge-navy">Logistics</span>
+              <span class="badge badge-navy ms-1">Trade</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERSHIP TIERS -->
+<section style="padding:5rem 0; background:var(--navy-light);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-label">Get Involved</div>
+      <h2 class="section-title mt-2">Partnership <span>Tiers</span></h2>
+      <div class="section-divider center"></div>
+      <p style="color:var(--muted); max-width:580px; margin:0 auto;">
+        There are multiple ways to partner with T&TG Trade Corp, from becoming a registered trader
+        to owning secondary shares in the corporation.
+      </p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="ttg-card tier-card h-100 fade-up">
+          <div class="icon-box icon-box-lg mx-auto mb-3"><i class="fas fa-user"></i></div>
+          <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Registered Trader</h5>
+          <div class="tier-amount mt-1">Free</div>
+          <div class="tier-label">to register</div>
+          <p style="color:var(--muted); font-size:0.85rem; line-height:1.8; margin-top:1rem;">
+            Register, verify your identity, and start trading on local or international markets.
+          </p>
+          <a href="{% url 'register' %}" class="btn-outline-gold btn mt-3 w-100">Register</a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="ttg-card tier-card h-100 fade-up" style="transition-delay:0.1s; border-color:rgba(201,168,76,0.3);">
+          <div class="icon-box icon-box-lg mx-auto mb-3 active"><i class="fas fa-certificate"></i></div>
+          <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Certified Partner</h5>
+          <div class="tier-amount mt-1">$500+</div>
+          <div class="tier-label">certificate fee</div>
+          <p style="color:var(--muted); font-size:0.85rem; line-height:1.8; margin-top:1rem;">
+            Complete a training programme, earn your certificate, and unlock international market access.
+          </p>
+          <a href="{% url 'programs' %}" class="btn-gold btn mt-3 w-100">Enroll Now</a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="ttg-card tier-card h-100 fade-up" style="transition-delay:0.2s;">
+          <div class="icon-box icon-box-lg mx-auto mb-3"><i class="fas fa-building"></i></div>
+          <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Corporate Partner</h5>
+          <div class="tier-amount mt-1">Custom</div>
+          <div class="tier-label">negotiated</div>
+          <p style="color:var(--muted); font-size:0.85rem; line-height:1.8; margin-top:1rem;">
+            Registered companies can partner with T&TG for import/export, apply for new small-scale company launches.
+          </p>
+          <a href="{% url 'contact' %}" class="btn-outline-gold btn mt-3 w-100">Contact Us</a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="ttg-card tier-card h-100 fade-up" style="transition-delay:0.3s;">
+          <div class="icon-box icon-box-lg mx-auto mb-3"><i class="fas fa-chart-pie"></i></div>
+          <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Secondary Shareholder</h5>
+          <div class="tier-amount mt-1">Eligible</div>
+          <div class="tier-label">after certificate</div>
+          <p style="color:var(--muted); font-size:0.85rem; line-height:1.8; margin-top:1rem;">
+            Certificate holders may apply to own secondary shares, pool funds, and participate in corporation growth.
+          </p>
+          <a href="{% url 'contact' %}" class="btn-outline-gold btn mt-3 w-100">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:5rem 0;">
+  <div class="container">
+    <div style="background:linear-gradient(135deg,var(--navy-light),var(--navy)); border:1px solid var(--border); border-radius:6px; padding:4rem; text-align:center; position:relative; overflow:hidden;">
+      <div style="position:absolute; top:-80px; right:-80px; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle, rgba(201,168,76,0.07), transparent 70%);"></div>
+      <div style="position:relative; z-index:1;">
+        <div class="section-label" style="justify-content:center; margin-bottom:1rem;">Get Started Today</div>
+        <h2 class="section-title" style="font-size:2.8rem;">Ready to Build <span>Together?</span></h2>
+        <p style="color:var(--muted); max-width:520px; margin:1rem auto 2rem; line-height:1.8;">
+          Whether you're a trader, investor, or corporate partner — there is a place for you in the T&TG network. Reach out to our Toronto headquarters today.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+          <a href="{% url 'contact' %}" class="btn-gold btn px-5 py-3">Contact Our Team</a>
+          <a href="{% url 'register' %}" class="btn-outline-gold btn px-5 py-3">Create Account</a>
+        </div>
+        <p style="color:var(--muted); font-size:0.8rem; margin-top:1.5rem;">
+          <i class="fas fa-phone me-1" style="color:var(--gold);"></i>{{ SITE_PHONE }}
+          &nbsp;·&nbsp;
+          <i class="fas fa-envelope me-1" style="color:var(--gold);"></i>{{ SITE_EMAIL }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

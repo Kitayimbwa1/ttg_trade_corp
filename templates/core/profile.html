@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile.user.get_full_name }} — T&TG Trade Corp{% endblock %}
+{% block content %}
+<div class="page-hero"><div class="container">
+  <div class="section-label">Trader Profile</div>
+  <h1 class="section-title mt-2">{{ profile.user.get_full_name }}</h1>
+</div></div>
+<div class="container py-5">
+  <div class="row g-5">
+    <div class="col-lg-4">
+      <div class="ttg-card p-4 text-center">
+        {% if profile.profile_photo %}
+          <img src="{{ profile.profile_photo.url }}" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid var(--gold); margin-bottom:1rem;">
+        {% else %}
+          <div style="width:120px; height:120px; border-radius:50%; background:var(--navy-light); border:3px solid var(--gold); display:inline-flex; align-items:center; justify-content:center; margin-bottom:1rem; font-size:2.5rem; color:var(--gold);">
+            <i class="fas fa-user"></i>
+          </div>
+        {% endif %}
+        <h4 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">{{ profile.user.get_full_name }}</h4>
+        <div style="color:var(--gold); font-size:0.78rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.5rem;">{{ profile.get_market_type_display }} Trader</div>
+        <div class="mt-2">
+          <span class="badge badge-navy">{{ profile.get_country_of_residence_display }}</span>
+          {% if profile.has_certificate %}<span class="badge badge-gold ms-1">Certified</span>{% endif %}
+        </div>
+        {% if profile.bio %}
+          <p style="color:var(--text-muted); font-size:0.88rem; margin-top:1rem; line-height:1.8;">{{ profile.bio }}</p>
+        {% endif %}
+        <hr style="border-color:var(--border);">
+        <div style="font-size:0.82rem; color:var(--text-muted); line-height:2;">
+          <div>{{ profile.user.products.count }} Products Listed</div>
+          <div>Member since {{ profile.created_at|date:"M Y" }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="ttg-card p-4 mb-4">
+        <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1rem;">Business Activity</h5>
+        <p style="color:var(--text-muted); line-height:1.9;">{{ profile.business_description }}</p>
+      </div>
+      {% if profile.user.products.all %}
+      <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1rem;">Listed Products</h5>
+      <div class="row g-3">
+        {% for product in profile.user.products.all %}
+        <div class="col-md-4">
+          <div class="ttg-card">
+            {% if product.image %}<img src="{{ product.image.url }}" style="width:100%; height:130px; object-fit:cover;">{% endif %}
+            <div class="p-3">
+              <h6 style="font-family:'Cormorant Garamond',serif; color:var(--cream); font-size:0.95rem;">{{ product.title }}</h6>
+              <div style="color:var(--gold); font-size:0.9rem;">{{ product.currency }} {{ product.price }}</div>
+              <a href="{% url 'product_detail' product.slug %}" class="btn-outline-gold btn btn-sm mt-2 w-100 py-1">View</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

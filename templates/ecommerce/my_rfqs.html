@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}My RFQs — T&TG Trade Corp{% endblock %}
+{% block content %}
+<div class="page-hero"><div class="container">
+  <div class="section-label">Buyer Portal</div>
+  <h1 class="section-title mt-2">My <span>RFQs</span></h1>
+</div></div>
+<div class="container py-5">
+  <div class="d-flex justify-content-end mb-3"><a href="{% url 'submit_rfq' %}" class="btn-gold btn"><i class="fas fa-plus me-1"></i>New RFQ</a></div>
+  {% if rfqs %}
+  <div class="row g-4">
+    {% for rfq in rfqs %}
+    <div class="col-md-6 col-lg-4">
+      <div class="ttg-card p-4">
+        <div class="d-flex justify-content-between mb-2">
+          <span class="badge badge-navy">{{ rfq.get_status_display }}</span>
+          <span style="color:var(--text-muted); font-size:0.78rem;">{{ rfq.created_at|date:"M d, Y" }}</span>
+        </div>
+        <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">{{ rfq.title }}</h5>
+        <p style="color:var(--text-muted); font-size:0.85rem;">{{ rfq.description|truncatewords:20 }}</p>
+        <div style="font-size:0.82rem; color:var(--text-muted);">Qty: <strong style="color:var(--cream);">{{ rfq.quantity }}</strong> &nbsp;·&nbsp; Dest: {{ rfq.get_destination_country_display }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-5">
+    <i class="fas fa-file-alt" style="font-size:3rem; color:var(--border); margin-bottom:1rem;"></i>
+    <h4 style="font-family:'Cormorant Garamond',serif; color:var(--text-muted);">No RFQs Yet</h4>
+    <a href="{% url 'submit_rfq' %}" class="btn-gold btn mt-3">Submit Your First RFQ</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

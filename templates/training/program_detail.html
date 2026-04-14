@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}{{ program.title }} — T&TG Trade Corp{% endblock %}
+{% block content %}
+<div class="page-hero"><div class="container">
+  <div class="section-label">{{ program.get_category_display }}</div>
+  <h1 class="section-title mt-2">{{ program.title }}</h1>
+  <div class="section-divider"></div>
+</div></div>
+<div class="container py-5">
+  <div class="row g-5">
+    <div class="col-lg-8">
+      <div class="ttg-card p-5">
+        <p style="color:var(--text-muted); line-height:1.9; font-size:1rem;">{{ program.description }}</p>
+        <div class="row g-3 mt-3">
+          <div class="col-sm-4">
+            <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:1rem; text-align:center;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:1.8rem; color:var(--gold);">{{ program.duration_hours }}h</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Duration</div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:1rem; text-align:center;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:1.8rem; color:var(--gold);">Free</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Watch / Subscribe</div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:1rem; text-align:center;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--gold);">${{ program.certificate_fee_usd }}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Certificate Fee</div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1rem;">Certificate Benefits</h5>
+          <ul style="color:var(--text-muted); font-size:0.9rem; line-height:2.2; list-style:none; padding:0;">
+            <li><i class="fas fa-star me-2" style="color:var(--gold);"></i>First priority for T&TG employment opportunities</li>
+            <li><i class="fas fa-globe me-2" style="color:var(--gold);"></i>Eligibility to trade on the international market</li>
+            <li><i class="fas fa-chart-pie me-2" style="color:var(--gold);"></i>Eligible to own secondary shares in the corporation</li>
+            <li><i class="fas fa-handshake me-2" style="color:var(--gold);"></i>Eligible to apply and partner for new small-scale companies</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="ttg-card p-4" style="position:sticky; top:100px;">
+        {% if is_subscribed %}
+          <div class="alert alert-success mb-3"><i class="fas fa-check-circle me-2"></i>You are enrolled!</div>
+          <a href="{% url 'my_programs' %}" class="btn-outline-gold btn w-100 mb-2">My Programs</a>
+        {% else %}
+          {% if user.is_authenticated %}
+            <a href="{% url 'subscribe' program.slug %}" class="btn-gold btn w-100 mb-3 py-3">Enroll — Free</a>
+          {% else %}
+            <a href="{% url 'login' %}" class="btn-gold btn w-100 mb-3 py-3">Sign In to Enroll</a>
+          {% endif %}
+        {% endif %}
+        <p style="color:var(--text-muted); font-size:0.82rem; text-align:center; margin-top:0.5rem;">
+          Certificate of Completion: <strong style="color:var(--gold);">${{ program.certificate_fee_usd }}</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

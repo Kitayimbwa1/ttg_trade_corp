@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title %}Foreign Exchange — T&TG Trade Corp{% endblock %}
+{% block extra_css %}
+<style>
+.rate-card { text-align:center; padding:1.5rem; }
+.rate-pair { font-size:0.75rem; color:var(--text-muted); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.3rem; }
+.rate-num { font-family:'Cormorant Garamond',serif; font-size:1.8rem; color:var(--gold); font-weight:700; }
+.rate-sub { font-size:0.78rem; color:var(--text-muted); margin-top:0.2rem; }
+.forex-hero-img { width:100%; height:350px; object-fit:cover; border-radius:4px; border:1px solid var(--border); opacity:0.85; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">Currency Solutions</div>
+    <h1 class="section-title mt-2">Foreign <span>Exchange Services</span></h1>
+    <div class="section-divider"></div>
+    <p style="color:var(--text-muted); max-width:580px;">
+      Competitive multi-currency exchange for individuals and businesses. Supporting cross-border transactions across all our operating markets.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-5 align-items-start">
+    <div class="col-lg-8">
+      <!-- RATES TABLE -->
+      <div class="ttg-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin:0;">Live Exchange Rates</h5>
+          <span style="color:var(--text-muted); font-size:0.78rem;"><i class="fas fa-circle me-1" style="color:#22c55e; font-size:0.5rem;"></i>Updated regularly</span>
+        </div>
+        {% if rates %}
+        <table class="table ttg-table">
+          <thead>
+            <tr>
+              <th>From</th><th>To</th><th>Rate</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for rate in rates %}
+            <tr>
+              <td><strong style="color:var(--gold);">{{ rate.from_currency }}</strong></td>
+              <td>{{ rate.to_currency }}</td>
+              <td style="font-family:'Cormorant Garamond',serif; font-size:1.1rem;">{{ rate.rate }}</td>
+              <td>
+                <a href="{% url 'exchange' %}?from={{ rate.from_currency }}&to={{ rate.to_currency }}" class="btn-outline-gold btn btn-sm py-1 px-3">Exchange</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="text-center py-4">
+          <i class="fas fa-chart-line" style="font-size:2.5rem; color:var(--border); margin-bottom:1rem;"></i>
+          <p style="color:var(--text-muted);">Exchange rates are set by our admin team. Contact us for current rates.</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- SUPPORTED CURRENCIES -->
+      <div class="ttg-card p-4">
+        <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1.5rem;">Supported Currencies</h5>
+        <div class="row g-3">
+          {% for code, name, flag in currency_list %}{% endfor %}
+          {% for item in "CADUGXUSDEURNLKESKESJPY"|make_list %}{% endfor %}
+          <div class="col-6 col-md-4 col-lg-3">
+            <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:0.8rem; text-align:center;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold); font-weight:700;">CAD</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Canadian Dollar</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:0.8rem; text-align:center;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold); font-weight:700;">USD</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">US Dollar</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:0.8rem; text-align:center;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold); font-weight:700;">UGX</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Ugandan Shilling</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:0.8rem; text-align:center;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold); font-weight:700;">EUR</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Euro</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:0.8rem; text-align:center;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold); font-weight:700;">KES</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Kenyan Shilling</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:0.8rem; text-align:center;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold); font-weight:700;">JPY</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">Japanese Yen</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-3">
+            <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:0.8rem; text-align:center;">
+              <div style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold); font-weight:700;">GBP</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">British Pound</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="col-lg-4">
+      <div class="ttg-card p-4 mb-4">
+        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&q=75" alt="Forex" class="forex-hero-img mb-4">
+        <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Why Use T&TG Forex?</h5>
+        <ul style="color:var(--text-muted); font-size:0.88rem; line-height:2; list-style:none; padding:0; margin-top:1rem;">
+          <li><i class="fas fa-check me-2" style="color:var(--gold)"></i>Competitive exchange rates</li>
+          <li><i class="fas fa-check me-2" style="color:var(--gold)"></i>Multi-currency support</li>
+          <li><i class="fas fa-check me-2" style="color:var(--gold)"></i>Mobile Money integration</li>
+          <li><i class="fas fa-check me-2" style="color:var(--gold)"></i>Bank &amp; E-transfer support</li>
+          <li><i class="fas fa-check me-2" style="color:var(--gold)"></i>Transparent transaction history</li>
+          <li><i class="fas fa-check me-2" style="color:var(--gold)"></i>5-country coverage</li>
+        </ul>
+        {% if user.is_authenticated %}
+          <a href="{% url 'exchange' %}" class="btn-gold btn w-100 mt-3">Exchange Now</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn-gold btn w-100 mt-3">Sign In to Exchange</a>
+        {% endif %}
+      </div>
+
+      <div class="ttg-card p-4">
+        <h6 style="color:var(--gold); font-size:0.78rem; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1rem;">Payment Methods</h6>
+        <div style="color:var(--text-muted); font-size:0.88rem;">
+          <div class="d-flex align-items-center gap-3 mb-3"><i class="fas fa-mobile-alt" style="color:var(--gold); width:20px;"></i> Mobile Money (MTN, Airtel, M-Pesa)</div>
+          <div class="d-flex align-items-center gap-3 mb-3"><i class="fas fa-paper-plane" style="color:var(--gold); width:20px;"></i> E-Transfer (tom.grouptradecorp.ca)</div>
+          <div class="d-flex align-items-center gap-3"><i class="fas fa-university" style="color:var(--gold); width:20px;"></i> Bank Transfer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

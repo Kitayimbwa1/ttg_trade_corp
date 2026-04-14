@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Page Not Found — T&TG Trade Corp{% endblock %}
+{% block content %}
+<div style="min-height:70vh; display:flex; align-items:center;">
+  <div class="container text-center py-5">
+    <div style="font-family:'Cormorant Garamond',serif; font-size:8rem; font-weight:700;
+                color:var(--gold); line-height:1; opacity:0.15; margin-bottom:-3rem;">404</div>
+    <div style="position:relative; z-index:1;">
+      <div class="section-label" style="justify-content:center; margin-bottom:1rem;">Page Not Found</div>
+      <h2 style="font-family:'Cormorant Garamond',serif; color:var(--cream); font-size:2.5rem;">
+        This Page Doesn't Exist
+      </h2>
+      <p style="color:var(--muted); max-width:440px; margin:1rem auto 2rem; line-height:1.8;">
+        The page you're looking for may have been moved, removed, or the link may be incorrect. Let's get you back on track.
+      </p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a href="{% url 'home' %}" class="btn-gold btn">Back to Homepage</a>
+        <a href="{% url 'marketplace' %}" class="btn-outline-gold btn">Browse Marketplace</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

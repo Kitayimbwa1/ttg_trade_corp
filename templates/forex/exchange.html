@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Currency Exchange — T&TG Trade Corp{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">Forex Bureau</div>
+    <h1 class="section-title mt-2">Exchange <span>Currency</span></h1>
+  </div>
+</div>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="ttg-card p-5">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Transaction Type</label>
+              <select name="transaction_type" class="form-select">
+                <option value="buy">Buy Currency</option>
+                <option value="sell">Sell Currency</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">From Currency</label>
+              <select name="from_currency" class="form-select">
+                <option value="USD">USD — US Dollar</option>
+                <option value="CAD">CAD — Canadian Dollar</option>
+                <option value="UGX">UGX — Ugandan Shilling</option>
+                <option value="EUR">EUR — Euro</option>
+                <option value="KES">KES — Kenyan Shilling</option>
+                <option value="JPY">JPY — Japanese Yen</option>
+                <option value="GBP">GBP — British Pound</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">To Currency</label>
+              <select name="to_currency" class="form-select">
+                <option value="CAD">CAD — Canadian Dollar</option>
+                <option value="USD">USD — US Dollar</option>
+                <option value="UGX">UGX — Ugandan Shilling</option>
+                <option value="EUR">EUR — Euro</option>
+                <option value="KES">KES — Kenyan Shilling</option>
+                <option value="JPY">JPY — Japanese Yen</option>
+                <option value="GBP">GBP — British Pound</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Amount</label>
+              <input type="number" name="amount_from" class="form-control" placeholder="Enter amount" min="1" step="0.01" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Notes (optional)</label>
+              <textarea name="notes" class="form-control" rows="3" placeholder="Any additional notes..."></textarea>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn-gold btn w-100 py-3">Submit Exchange Request</button>
+            </div>
+          </div>
+        </form>
+        <div style="background:rgba(201,168,76,0.07); border:1px solid var(--border); border-radius:3px; padding:1rem; margin-top:1.5rem; color:var(--text-muted); font-size:0.85rem; line-height:1.7;">
+          <i class="fas fa-info-circle me-2" style="color:var(--gold);"></i>
+          Transactions are processed through our verified payment systems. You will receive a reference number for payment via Mobile Money, E-Transfer, or Bank Transfer.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

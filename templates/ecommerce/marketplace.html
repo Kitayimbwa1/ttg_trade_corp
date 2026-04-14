@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %}Marketplace — T&TG Trade Corp{% endblock %}
+{% block extra_css %}
+<style>
+.market-toggle { display:flex; background:var(--navy-light); border:1px solid var(--border); border-radius:4px; overflow:hidden; }
+.market-toggle a { flex:1; padding:0.65rem 1.5rem; text-align:center; font-size:0.85rem; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; text-decoration:none; color:var(--text-muted); transition:all 0.2s; }
+.market-toggle a.active { background:var(--gold); color:var(--navy); }
+.product-img { width:100%; height:200px; object-fit:cover; }
+.product-card { overflow:hidden; }
+.product-card .card-body { padding:1.2rem; }
+.product-price { font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--gold); font-weight:700; }
+.product-seller { font-size:0.78rem; color:var(--text-muted); }
+.filter-bar { background:var(--navy-mid); border:1px solid var(--border); border-radius:4px; padding:1.2rem 1.5rem; margin-bottom:2rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-end justify-content-between gap-3">
+      <div>
+        <div class="section-label">T&TG Trading Portal</div>
+        <h1 class="section-title mt-2" style="font-size:2.5rem;">
+          {% if market_type == 'international' %}International{% else %}Local{% endif %} <span>Marketplace</span>
+        </h1>
+      </div>
+      <div class="market-toggle">
+        <a href="?market=local{% if selected_country %}&country={{ selected_country }}{% endif %}" class="{% if market_type == 'local' %}active{% endif %}">
+          <i class="fas fa-store me-1"></i>Local
+        </a>
+        <a href="?market=international{% if selected_country %}&country={{ selected_country }}{% endif %}" class="{% if market_type == 'international' %}active{% endif %}">
+          <i class="fas fa-globe me-1"></i>International
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container py-4">
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <form method="get" class="row g-3 align-items-end">
+      <input type="hidden" name="market" value="{{ market_type }}">
+      <div class="col-md-4">
+        <label class="form-label" style="font-size:0.78rem;">Search Products</label>
+        <input type="text" name="q" class="form-control" placeholder="Search..." value="{{ query }}">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label" style="font-size:0.78rem;">Country</label>
+        <select name="country" class="form-select">
+          <option value="">All Countries</option>
+          {% for code, name in country_choices %}
+            <option value="{{ code }}" {% if selected_country == code %}selected{% endif %}>{{ name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label" style="font-size:0.78rem;">Category</label>
+        <select name="category" class="form-select">
+          <option value="">All Categories</option>
+          {% for cat in categories %}
+            <option value="{{ cat.slug }}">{{ cat.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn-gold btn w-100">Filter</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- COUNTRY PILLS -->
+  <div class="d-flex flex-wrap gap-2 mb-4">
+    <a href="?market={{ market_type }}" class="country-pill {% if not selected_country %}active{% endif %}">All Countries</a>
+    {% for code, name in country_choices %}
+      <a href="?market={{ market_type }}&country={{ code }}" class="country-pill {% if selected_country == code %}active{% endif %}">{{ name }}</a>
+    {% endfor %}
+  </div>
+
+  <!-- PRODUCTS GRID -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <span style="color:var(--text-muted); font-size:0.88rem;">{{ products.count }} product{{ products.count|pluralize }} found</span>
+    {% if user.is_authenticated %}
+      <a href="{% url 'add_product' %}" class="btn-gold btn btn-sm"><i class="fas fa-plus me-1"></i>List Product</a>
+    {% endif %}
+  </div>
+
+  {% if products %}
+    <div class="row g-4">
+      {% for product in products %}
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="ttg-card product-card h-100">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.title }}" class="product-img">
+          {% else %}
+            <div class="product-img d-flex align-items-center justify-content-center" style="background:var(--navy-light);">
+              <i class="fas fa-box" style="font-size:2.5rem; color:var(--border);"></i>
+            </div>
+          {% endif %}
+          <div class="card-body">
+            {% if product.category %}
+              <span class="badge badge-navy mb-2" style="font-size:0.68rem;">{{ product.category.name }}</span>
+            {% endif %}
+            <h6 style="font-family:'Cormorant Garamond',serif; color:var(--cream); font-size:1.1rem; margin-bottom:0.4rem;">
+              <a href="{% url 'product_detail' product.slug %}" style="text-decoration:none; color:inherit;">{{ product.title }}</a>
+            </h6>
+            <div class="product-price">{{ product.currency }} {{ product.price }}</div>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div class="product-seller"><i class="fas fa-user me-1"></i>{{ product.seller.get_full_name|default:product.seller.username }}</div>
+              <span class="badge badge-navy" style="font-size:0.65rem;">{{ product.get_country_display }}</span>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+              <a href="{% url 'product_detail' product.slug %}" class="btn-outline-gold btn btn-sm flex-fill text-center py-1">View</a>
+              {% if user.is_authenticated %}
+                <a href="{% url 'place_order' product.slug %}" class="btn-gold btn btn-sm flex-fill text-center py-1">Order</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-5">
+      <i class="fas fa-search" style="font-size:3rem; color:var(--border); margin-bottom:1rem;"></i>
+      <h4 style="font-family:'Cormorant Garamond',serif; color:var(--text-muted);">No Products Found</h4>
+      <p style="color:var(--text-muted);">Try adjusting your filters or be the first to list in this category.</p>
+      {% if user.is_authenticated %}
+        <a href="{% url 'add_product' %}" class="btn-gold btn mt-2">List Your Product</a>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

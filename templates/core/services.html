@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Our Services — T&TG Trade Corp{% endblock %}
+{% block content %}
+<div class="page-hero">
+  <div class="container">
+    <div class="section-label">What We Do</div>
+    <h1 class="section-title mt-2">Our <span>Services</span></h1>
+    <div class="section-divider"></div>
+  </div>
+</div>
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="ttg-card p-5 h-100">
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=75" alt="E-commerce" style="width:100%; height:200px; object-fit:cover; border-radius:3px; margin-bottom:1.5rem; opacity:0.85;">
+        <div style="color:var(--gold); font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.5rem;">01</div>
+        <h3 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">E-Commerce Trading Portal</h3>
+        <p style="color:var(--text-muted); line-height:1.9; font-size:0.92rem;">A dual-mode marketplace enabling local and international trade across five countries. Verified traders can list products, manage orders, submit RFQs, and build shareable profile pages. Each country has a dedicated local trading platform with identity verification, declaration agreements, and secure payment processing.</p>
+        <a href="{% url 'marketplace' %}" class="btn-gold btn mt-3">Browse Marketplace</a>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="ttg-card p-5 h-100">
+        <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=600&q=75" alt="Import Export" style="width:100%; height:200px; object-fit:cover; border-radius:3px; margin-bottom:1.5rem; opacity:0.85;">
+        <div style="color:var(--gold); font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.5rem;">02</div>
+        <h3 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Import &amp; Export Operations</h3>
+        <p style="color:var(--text-muted); line-height:1.9; font-size:0.92rem;">Our subsidiary manages cross-border goods movement for registered corporate partners. We coordinate logistics, trade documentation, customs compliance, and warehousing through our physical offices in Canada, Uganda, Netherlands, Japan, and Kenya. Partners must be registered companies with a Certificate of Completion.</p>
+        <a href="{% url 'contact' %}" class="btn-gold btn mt-3">Become a Partner</a>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="ttg-card p-5 h-100">
+        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=75" alt="Forex" style="width:100%; height:200px; object-fit:cover; border-radius:3px; margin-bottom:1.5rem; opacity:0.85;">
+        <div style="color:var(--gold); font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.5rem;">03</div>
+        <h3 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Foreign Exchange &amp; Brokerage</h3>
+        <p style="color:var(--text-muted); line-height:1.9; font-size:0.92rem;">Our General Investment Dealer provides competitive foreign exchange solutions supporting cross-border transactions. We offer USD, CAD, UGX, KES, EUR, JPY, and GBP exchange through Mobile Money, e-transfer, and bank transfer. Our forex bureau ensures legal compliance across all operating jurisdictions.</p>
+        <a href="{% url 'forex_home' %}" class="btn-gold btn mt-3">View Forex Rates</a>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="ttg-card p-5 h-100">
+        <img src="https://images.unsplash.com/photo-1633158829875-e5316a358c6f?w=600&q=75" alt="Investment" style="width:100%; height:200px; object-fit:cover; border-radius:3px; margin-bottom:1.5rem; opacity:0.85;">
+        <div style="color:var(--gold); font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.5rem;">04</div>
+        <h3 style="font-family:'Cormorant Garamond',serif; color:var(--cream);">Strategic Investment</h3>
+        <p style="color:var(--text-muted); line-height:1.9; font-size:0.92rem;">Long-term investment activities and portfolio management aimed at generating sustainable financial growth. Certificate holders may apply for secondary shareholding and small-scale company partnerships. We pool resources across networks for structured investment activities in technology, agriculture, and trade infrastructure.</p>
+        <a href="{% url 'contact' %}" class="btn-gold btn mt-3">Enquire Now</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

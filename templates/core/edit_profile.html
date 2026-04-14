@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile — T&TG Trade Corp{% endblock %}
+{% block content %}
+
+<div class="page-hero">
+  <div class="container">
+    <div class="ttg-breadcrumb mb-3">
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      <span class="sep">›</span>
+      <span class="current">Edit Profile</span>
+    </div>
+    <div class="section-label">Account Settings</div>
+    <h1 class="section-title mt-2" style="font-size:2.3rem;">Edit Your <span>Profile</span></h1>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-5">
+    <div class="col-lg-8">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- PROFILE PHOTO -->
+        <div class="ttg-card p-4 mb-4">
+          <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1.5rem;">
+            <i class="fas fa-camera me-2" style="color:var(--gold);"></i>Profile Photo
+          </h5>
+          <div class="d-flex align-items-center gap-4">
+            {% if profile.profile_photo %}
+              <img src="{{ profile.profile_photo.url }}" id="preview-profile_photo"
+                   class="avatar avatar-lg avatar-gold" alt="Profile Photo">
+            {% else %}
+              <div class="avatar-placeholder avatar-lg avatar-gold" id="preview-profile_photo-placeholder">
+                <i class="fas fa-user" style="font-size:2rem;"></i>
+              </div>
+              <img id="preview-profile_photo" class="avatar avatar-lg avatar-gold" style="display:none;">
+            {% endif %}
+            <div>
+              <label class="form-label">Upload New Photo</label>
+              <input type="file" name="profile_photo" class="form-control" accept="image/*">
+              <div class="form-text mt-1">JPG or PNG, max 5MB. Square recommended.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BIO & DESCRIPTION -->
+        <div class="ttg-card p-4 mb-4">
+          <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1.5rem;">
+            <i class="fas fa-user-edit me-2" style="color:var(--gold);"></i>Public Information
+          </h5>
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Short Bio</label>
+              <textarea name="bio" class="form-control" rows="3"
+                placeholder="Tell other traders about yourself...">{{ profile.bio }}</textarea>
+              <div class="form-text">Shown on your public profile page.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" name="phone_number" class="form-control"
+                value="{{ profile.phone_number }}">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Business Description</label>
+              <textarea name="business_description" class="form-control" rows="4">{{ profile.business_description }}</textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- READ-ONLY INFO -->
+        <div class="ttg-card p-4 mb-4 no-hover">
+          <h5 style="font-family:'Cormorant Garamond',serif; color:var(--cream); margin-bottom:1.2rem;">
+            <i class="fas fa-lock me-2" style="color:var(--gold);"></i>Account Details
+            <small style="font-family:'DM Sans',sans-serif; font-size:0.75rem; color:var(--muted); margin-left:0.6rem;">(Contact admin to change)</small>
+          </h5>
+          <div class="row g-3" style="font-size:0.88rem;">
+            <div class="col-sm-6">
+              <span style="color:var(--muted); font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase;">Full Name</span>
+              <div style="color:var(--cream); margin-top:0.2rem;">{{ user.get_full_name }}</div>
+            </div>
+            <div class="col-sm-6">
+              <span style="color:var(--muted); font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase;">Email</span>
+              <div style="color:var(--cream); margin-top:0.2rem;">{{ user.email }}</div>
+            </div>
+            <div class="col-sm-6">
+              <span style="color:var(--muted); font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase;">Country</span>
+              <div style="color:var(--cream); margin-top:0.2rem;">{{ profile.get_country_of_residence_display }}</div>
+            </div>
+            <div class="col-sm-6">
+              <span style="color:var(--muted); font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase;">Market Type</span>
+              <div style="color:var(--cream); margin-top:0.2rem;">{{ profile.get_market_type_display }}</div>
+            </div>
+            <div class="col-sm-6">
+              <span style="color:var(--muted); font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase;">Account Status</span>
+              <div style="margin-top:0.3rem;">
+                <span class="status-pill status-{{ profile.status }}">{{ profile.get_status_display }}</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <span style="color:var(--muted); font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase;">Profile URL</span>
+              <div style="color:var(--gold); margin-top:0.2rem; font-size:0.82rem; word-break:break-all;">
+                /profile/{{ profile.profile_link_slug }}/
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-3">
+          <button type="submit" class="btn-gold btn px-5">Save Changes</button>
+          <a href="{% url 'dashboard' %}" class="btn-ghost btn px-4">Cancel</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="col-lg-4">
+      <div class="ttg-card p-4 no-hover" style="position:sticky; top:100px;">
+        <h6 style="color:var(--gold); font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1.2rem;">Your Profile Link</h6>
+        <div style="background:var(--navy-light); border:1px solid var(--border); border-radius:3px; padding:0.75rem 1rem; font-size:0.78rem; color:var(--muted); word-break:break-all; margin-bottom:0.75rem;">
+          {{ request.scheme }}://{{ request.get_host }}/profile/{{ profile.profile_link_slug }}/
+        </div>
+        <button onclick="copyToClipboard('{{ request.scheme }}://{{ request.get_host }}/profile/{{ profile.profile_link_slug }}/', this)"
+                class="btn-outline-gold btn btn-sm w-100">
+          <i class="fas fa-copy me-1"></i>Copy Link
+        </button>
+
+        <hr style="border-color:var(--border); margin:1.5rem 0;">
+        <h6 style="color:var(--gold); font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:1rem;">Quick Links</h6>
+        <div class="d-grid gap-2">
+          <a href="{% url 'profile' profile.profile_link_slug %}" class="btn-ghost btn text-start btn-sm">
+            <i class="fas fa-eye me-2" style="color:var(--gold);"></i>View Public Profile
+          </a>
+          <a href="{% url 'add_product' %}" class="btn-ghost btn text-start btn-sm">
+            <i class="fas fa-plus me-2" style="color:var(--gold);"></i>List New Product
+          </a>
+          <a href="{% url 'programs' %}" class="btn-ghost btn text-start btn-sm">
+            <i class="fas fa-graduation-cap me-2" style="color:var(--gold);"></i>Training Programs
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
